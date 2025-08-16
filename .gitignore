@@ -1,0 +1,60 @@
+# Build results
+bin/
+obj/
+Debug/
+Release/
+[Bb]uild/
+[Bb]in/
+[Oo]bj/
+
+# Rider / VSCode / Visual Studio folders
+.vs/
+.idea/
+.vscode/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Logs
+*.log
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NuGet
+*.nupkg
+# The packages folder can be ignored because of restore
+**/packages/*
+!**/packages/build/
+# Uncomment if you have nuget.exe in the repo
+# nuget.exe
+
+# Azure
+*.PublishSettings
+*.pubxml
+*.publishproj
+
+# IIS Express
+/.vs/
+*.dbmdl
+*.bak
+
+# Windows
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Others
+*.swp
+*.lock.json
+
+# ASP.
