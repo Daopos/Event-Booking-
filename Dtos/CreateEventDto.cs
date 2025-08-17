@@ -18,5 +18,12 @@ namespace EventBooking.Dtos
 
         [Required(ErrorMessage = "Status is required")]
         public StatusEnum? Status { get; set; }
+
+
+        [StringLength(244, ErrorMessage = "Event description cannot be longer than 244 characters")]
+        public string? Description { get; set; }
+
+        [StringLength(244, ErrorMessage = "Image description cannot be longer than 244 characters")]
+        public string? ImageLink { get; set; }
     }
 }

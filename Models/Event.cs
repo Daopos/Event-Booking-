@@ -14,6 +14,12 @@ namespace EventBooking.Models
         public int Seats { get; set; }
         public StatusEnum Status { get; set; }
 
+        public ICollection<EventBook> EventBookings { get; set; }
+
+        public string? Description { get; set; }
+        public string? ImageLink { get; set; }
+
+
     }
 
     public enum StatusEnum

@@ -31,6 +31,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Event Name</th>
+                    <th scope="col" style="width: 250px;">Description</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Date</th>
                     <th scope="col">Seats</th>
                     <th scope="col">Status</th>
@@ -43,21 +45,25 @@
                     <tr>
                         <th scope="row">@i</th>
                         <td>@evt.EventName</td>
+                        <td>@evt.Description</td>
+                        <td>@(string.IsNullOrEmpty(evt.ImageLink) ? "Not Available" : "Available")</td>
                         <td>@evt.Date</td>
                         <td>@evt.Seats</td>
                         <td>@evt.Status</td>
-                        <td class="d-flex gap-2">
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editEventModal" data-id="@evt.Id" data-name="@evt.EventName"
-                                data-date="@evt.Date.ToString("yyyy-MM-dd")" data-seats="@evt.Seats"
-                                data-status="@evt.Status">
-                                Edit
-                            </button>
-                            <Form asp-action="Delete" asp-controller="Admin" method="POST">
-                                <input type="hidden" name="id" value="@evt.Id" />
-                                <Button type="submit" class="btn btn-danger">Delete</Button>
-                            </Form>
-
+                        <td>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editEventModal" data-id="@evt.Id" data-name="@evt.EventName"
+                                    data-date="@evt.Date.ToString("yyyy-MM-dd")" data-seats="@evt.Seats"
+                                    data-status="@evt.Status" data-imagelink="@evt.ImageLink"
+                                    data-description="@evt.Description">
+                                    Edit
+                                </button>
+                                <Form asp-action="Delete" asp-controller="Admin" method="POST">
+                                    <input type="hidden" name="id" value="@evt.Id" />
+                                    <Button type="submit" class="btn btn-danger">Delete</Button>
+                                </Form>
+                            </div>
 
                         </td>
                     </tr>
@@ -133,8 +139,26 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input asp-for="UpdateEvent.Description" type="text" class="form-control"
+                            id="editEventDescription" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Image Link</label>
+                        <input asp-for="UpdateEvent.ImageLink" type="text" class="form-control"
+                            id="editEventImageLink" />
+                    </div>
+
+
+                    <div class=" mb-3">
                         <label class="form-label">Date</label>
                         <input asp-for="UpdateEvent.Date" type="date" class="form-control" id="editEventDate" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Seats</label>
+                        <input asp-for="UpdateEvent.Seats" type="number" class="form-control" id="editEventSeats" />
                     </div>
 
                     <div class="mb-3">
@@ -177,6 +201,9 @@
                 var date = button.data('date');
                 var seats = button.data('seats');
                 var status = button.data('status');
+                var description = button.data('description');
+                var imagelink = button.data('imagelink');
+
 
                 var modal = $(this);
                 modal.find('#editEventId').val(id);
@@ -184,6 +211,9 @@
                 modal.find('#editEventDate').val(date);
                 modal.find('#editEventSeats').val(seats);
                 modal.find('#editEventStatus').val(status);
+                modal.find('#editEventDescription').val(description);
+                modal.find('#editEventImageLink').val(imagelink);
+
             });
     </script>
 }

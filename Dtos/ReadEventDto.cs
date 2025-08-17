@@ -6,6 +6,9 @@ namespace EventBooking.Dtos
     {
         public int Id { get; set; }
         public string EventName { get; set; }
+        public string Description { get; set; }
+        public string ImageLink { get; set; }
+
 
         public DateOnly Date { get; set; }
 

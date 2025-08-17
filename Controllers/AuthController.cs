@@ -73,9 +73,18 @@ namespace EventBooking.Controllers
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return RedirectToAction("Index", "Admin");
-            }
+                if (user.Role == RoleEnum.Admin)
+                {
+                    return RedirectToAction("Index", "Admin");
 
+                }
+                else if (user.Role == RoleEnum.User)
+                {
+                    return RedirectToAction("Index", "User");
+
+                }
+
+            }
             // Add errors from IdentityResult to ModelState
             foreach (var error in result.Errors)
             {

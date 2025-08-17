@@ -65,6 +65,9 @@ namespace EventBooking.Services
             existEvent.Date = data.Date;
             existEvent.Seats = data.Seats;
             existEvent.Status = data.Status;
+            existEvent.Description = data.Description;
+            existEvent.ImageLink = data.ImageLink;
+
 
             await _eventContext.SaveChangesAsync();
         }

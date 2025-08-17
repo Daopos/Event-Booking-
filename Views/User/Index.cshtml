@@ -1,0 +1,35 @@
+@{
+    Layout = "~/Views/sharedUser/_UserLayout.cshtml";
+}
+
+@model List<EventBooking.Dtos.ReadEventDto>
+
+<div class="main py-3">
+    <div class="d-flex flex-wrap gap-3">
+        @foreach (var listEvent in Model)
+        {
+
+            <div class="card" style="width: 18rem;">
+                <img src="@listEvent.ImageLink" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"> @listEvent.EventName</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card’s
+                        content.
+                    </p>
+                    <div class="mb-3 @(listEvent.Status == StatusEnum.Open ? "bg-success" : "bg-danger") text-light rounded"
+                        style="width: fit-content; padding: 0.25rem 0.5rem;">
+                        @listEvent.Status
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <p>@listEvent.Seats Seats</p>
+                        <p>@listEvent.Date</p>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+</div>
