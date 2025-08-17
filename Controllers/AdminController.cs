@@ -49,11 +49,16 @@ namespace EventBooking.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(AdminEventViewModel vm)
         {
-            if (!ModelState.IsValid)
+            if (vm.CreateEvent == null)
             {
-                TempData["error"] = "Validation failed!";
+                TempData["error"] = "Can't Create Event!";
 
-                return RedirectToAction("Index"); // 🔹 Redirect instead of returning View
+                vm.Events = _mapper.Map<List<ReadEventDto>>(await _eventRepo.GetAllEvents());
+
+                // tell the view to reopen modal
+                TempData["showModal"] = true;
+
+                return View("Index", vm);
             }
 
             try
@@ -64,16 +69,72 @@ namespace EventBooking.Controllers
 
                 TempData["success"] = "Event created successfully!";
 
-                return RedirectToAction("Index", "Admin"); // 🔹 PRG pattern
+                // ✅ Success → redirect (PRG pattern)
+                return RedirectToAction("Index", "Admin");
             }
             catch (Exception err)
             {
-                TempData["error"] = "Something went wrong while creating the event.";
-
-                return RedirectToAction("Index"); // 🔹 Redirect
+                TempData["error"] = "Something went wrong!";
+                return RedirectToAction("Index", "Admin");
             }
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            try
+            {
+                await _eventRepo.DeleteEvent(id);
+                TempData["success"] = "Event successfully deleted!";
+            }
+            catch (Exception err)
+            {
+                TempData["error"] = "Failed to Delete Event!";
+
+            }
+
+            return RedirectToAction("Index", "Admin");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AdminEventViewModel vm)
+        {
+            // if (!ModelState.IsValid)
+            // {
+            //     TempData["Error"] = "Can't update event";
+
+            //     vm.Events = _mapper.Map<List<ReadEventDto>>(await _eventRepo.GetAllEvents());
+
+            //     // tell the view to reopen modal
+            //     TempData["showModal"] = true;
+
+            //     return View("Index", vm);
+            // }
+            Console.WriteLine($"Id: {vm.UpdateEvent.Id}");
+            Console.WriteLine($"Name: {vm.UpdateEvent.EventName}");
+            Console.WriteLine($"Date: {vm.UpdateEvent.Date}");
+            Console.WriteLine($"Seats: {vm.UpdateEvent.Seats}");
+            Console.WriteLine($"Status: {vm.UpdateEvent.Status}");
+            try
+            {
+                var updateEvent = _mapper.Map<Event>(vm.UpdateEvent);
+
+                await _eventRepo.UpdateEvent(updateEvent);
+
+                TempData["Success"] = "Successfully Edited";
+
+                return RedirectToAction("Index", "Admin");
+
+            }
+            catch (Exception err)
+            {
+                TempData["error"] = "Something went wrong!";
+                return RedirectToAction("Index", "Admin");
+            }
+        }
 
     }
 }

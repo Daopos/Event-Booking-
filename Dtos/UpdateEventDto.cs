@@ -1,10 +1,13 @@
+
 using System.ComponentModel.DataAnnotations;
 using EventBooking.Models;
 
 namespace EventBooking.Dtos
 {
-    public class CreateEventDto
+    public class UpdateEventDto
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Event name is required")]
         [StringLength(100, ErrorMessage = "Event name cannot be longer than 100 characters")]
         public string EventName { get; set; }

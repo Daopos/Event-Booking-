@@ -1,9 +1,13 @@
 
 
+using System.Threading.Tasks;
 using EventBooking.Dtos;
 using EventBooking.Models;
+using EventBooking.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace EventBooking.Controllers
 {
@@ -87,7 +91,77 @@ namespace EventBooking.Controllers
         [HttpGet("/login")]
         public IActionResult Login()
         {
+
+            if (User.Identity.IsAuthenticated)
+            {
+
+                if (User.IsInRole("Admin"))
+                {
+                    return RedirectPermanent("/admin/index");
+                }
+                else
+                {
+                    return RedirectPermanent("/user/index");
+
+
+                }
+
+            }
             return View("Views/Auth/Login.cshtml");
+        }
+
+        [HttpPost("/login")]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View("Login", model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(
+                model.Email,
+                model.Password,
+                false,
+                lockoutOnFailure: false
+
+            );
+
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                var roles = await _userManager.GetRolesAsync(user);
+
+                if (roles.Contains("Admin"))
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if (roles.Contains("User"))
+                {
+                    return RedirectToAction("Index", "User");
+                }
+
+            }
+
+            if (result.IsLockedOut)
+            {
+                ModelState.AddModelError("", "Your account is locked.");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+            }
+
+            return View("Login", model);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Auth");
         }
 
 

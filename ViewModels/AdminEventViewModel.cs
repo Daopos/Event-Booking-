@@ -7,5 +7,7 @@ namespace EventBooking.ViewModels
         public CreateEventDto CreateEvent { get; set; } = new CreateEventDto();
 
         public List<ReadEventDto> Events { get; set; } = new List<ReadEventDto>();
+
+        public UpdateEventDto UpdateEvent { get; set; } = new UpdateEventDto();
     }
 }

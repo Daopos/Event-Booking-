@@ -39,6 +39,35 @@ namespace EventBooking.Services
             return await _eventContext.Events.ToListAsync();
         }
 
+        public async Task DeleteEvent(int id)
+        {
+            var existEvent = await _eventContext.Events.Where(e => e.Id == id).FirstOrDefaultAsync();
+
+            if (existEvent is null)
+            {
+                throw new ArgumentException("Event doesn't exist");
+            }
+
+            _eventContext.Events.Remove(existEvent);
+            await _eventContext.SaveChangesAsync();
+
+        }
+
+        public async Task UpdateEvent(Event data)
+        {
+            var existEvent = await _eventContext.Events.FirstOrDefaultAsync(e => e.Id == data.Id);
+
+            if (existEvent is null)
+                throw new ArgumentException("Event doesn't exist");
+
+            // Update fields manually
+            existEvent.EventName = data.EventName;
+            existEvent.Date = data.Date;
+            existEvent.Seats = data.Seats;
+            existEvent.Status = data.Status;
+
+            await _eventContext.SaveChangesAsync();
+        }
 
 
     }

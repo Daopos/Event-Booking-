@@ -10,6 +10,7 @@ namespace EventBooking.Profiles
         {
             CreateMap<CreateEventDto, Event>();
             CreateMap<Event, ReadEventDto>();
+            CreateMap<UpdateEventDto, Event>();
         }
     }
 }

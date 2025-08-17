@@ -58,3 +58,5 @@ $RECYCLE.BIN/
 *.lock.json
 
 # ASP.
+
+.fake

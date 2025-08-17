@@ -1,8 +1,9 @@
+@using EventBooking.ViewModels
 @{
     Layout = null;
 }
 
-@model EventBooking.Dtos.CreateUserDto
+@model LoginViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>Login</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -47,12 +48,8 @@
 <body>
     <div class="bg-light  p-5 rounded w-25">
         <div asp-validation-summary="All" class="text-danger"></div>
-        <h1>Sign up</h1>
-        <form asp-action="Signup" method="post">
-            <div class="mb-3">
-                <label for="exampleName" class="form-label">Name</label>
-                <input asp-for="Name" type="text" class="form-control" id="exampleName">
-            </div>
+        <h1>Log in</h1>
+        <form asp-action="Login" method="post">
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                 <input asp-for="Email" type="email" class="form-control" id="exampleInputEmail1"
@@ -64,25 +61,18 @@
                 <input asp-for="Password" type="password" class="form-control" id="exampleInputPassword1">
             </div>
 
-            <div class="mb-4">
-                <label for="role" class="form-label">Role</label>
-                <select asp-for="Role" name="role" class="form-select" aria-label="Default select example">
-                    <option selected>--Select--</option>
-                    <option value="Admin">Admin</option>
-                    <option value="User">User</option>
-                </select>
-            </div>
             <button type="submit" class="btn btn-primary w-100">Submit</button>
         </form>
-        <div class="d-flex align-items-center">
+
+        <div class="d-flex align-items-center ">
             <hr class="flex-grow-1">
             <span class="mx-3 text-muted">OR</span>
             <hr class="flex-grow-1">
         </div>
-        <a href="@Url.Action("Login", "Auth")">Already have an account? Login</a>
+        <a href="@Url.Action("Signup", "Auth")">Don't have an account? Sign up</a>
+
+
     </div>
-
-
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -8,6 +8,15 @@
 @model AdminEventViewModel
 
 <div class="py-5">
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">@TempData["error"]</div>
+
+    }
+    else if (TempData["success"] != null)
+    {
+        <div class="alert alert-success" role="alert">@TempData["success"]</div>
+    }
     <div class=" border rounded shadow-sm">
         <div class="p-4 d-flex justify-content-between align-items-center">
             <h1>Events</h1>
@@ -25,6 +34,7 @@
                     <th scope="col">Date</th>
                     <th scope="col">Seats</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +46,20 @@
                         <td>@evt.Date</td>
                         <td>@evt.Seats</td>
                         <td>@evt.Status</td>
+                        <td class="d-flex gap-2">
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                data-bs-target="#editEventModal" data-id="@evt.Id" data-name="@evt.EventName"
+                                data-date="@evt.Date.ToString("yyyy-MM-dd")" data-seats="@evt.Seats"
+                                data-status="@evt.Status">
+                                Edit
+                            </button>
+                            <Form asp-action="Delete" asp-controller="Admin" method="POST">
+                                <input type="hidden" name="id" value="@evt.Id" />
+                                <Button type="submit" class="btn btn-danger">Delete</Button>
+                            </Form>
+
+
+                        </td>
                     </tr>
                     i++;
                 }
@@ -92,3 +116,74 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-1">
+                <h1 class="modal-title fs-5" id="editModalLabel">Edit Event</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editEventForm" asp-action="Edit" asp-controller="Admin" method="POST">
+                    <input <input asp-for="UpdateEvent.Id" type="hidden" id="editEventId" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Event Name</label>
+                        <input asp-for="UpdateEvent.EventName" type="text" class="form-control" id="editEventName" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+                        <input asp-for="UpdateEvent.Date" type="date" class="form-control" id="editEventDate" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Seats</label>
+                        <input asp-for="UpdateEvent.Seats" type="number" class="form-control" id="editEventSeats" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select asp-for="UpdateEvent.Status" class="form-select" id="editEventStatus">
+                            <option value="Open">Open</option>
+                            <option value="Close">Close</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="editEventForm" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        @* $(document).ready(function () {
+            var showModal = '@TempData["showModal"]' === 'True';
+            if (showModal) {
+                var myModal = new bootstrap.Modal(document.getElementById('addEventModal'));
+                myModal.show();
+            }
+        }); *@
+
+            $('#editEventModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var id = button.data('id');
+                var name = button.data('name');
+                var date = button.data('date');
+                var seats = button.data('seats');
+                var status = button.data('status');
+
+                var modal = $(this);
+                modal.find('#editEventId').val(id);
+                modal.find('#editEventName').val(name);
+                modal.find('#editEventDate').val(date);
+                modal.find('#editEventSeats').val(seats);
+                modal.find('#editEventStatus').val(status);
+            });
+    </script>
+}

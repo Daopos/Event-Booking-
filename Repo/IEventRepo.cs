@@ -10,6 +10,9 @@ namespace EventBooking.Repo
 
         Task<IEnumerable<Event>> GetAllEvents();
 
+        Task DeleteEvent(int id);
+
+        Task UpdateEvent(Event data);
 
 
     }
