@@ -9,6 +9,6 @@ namespace EventBooking.Repo
     {
         Task Create(EventBook data);
 
-        IEnumerable<EventBook> GetEventBookByUserId();
+        Task<IEnumerable<EventBook>> GetEventBookByUserId(int UserId);
     }
 }

@@ -13,6 +13,7 @@ namespace EventBooking.Data
 
 
         public DbSet<Event> Events { get; set; }
+        public DbSet<EventBook> EventBooks { get; set; }
 
     }
 

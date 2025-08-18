@@ -15,6 +15,7 @@ builder.Services.AddControllersWithViews();
 
 // D.I Container of UserController
 builder.Services.AddScoped<IEventRepo, EventService>();
+builder.Services.AddScoped<IEventBookRepo, EventBookService>();
 
 //Connect to Db
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

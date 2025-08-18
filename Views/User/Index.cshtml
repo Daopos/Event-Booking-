@@ -5,6 +5,15 @@
 @model List<EventBooking.Dtos.ReadEventDto>
 
 <div class="main py-3">
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">@TempData["error"]</div>
+
+    }
+    else if (TempData["success"] != null)
+    {
+        <div class="alert alert-success" role="alert">@TempData["success"]</div>
+    }
     <div class="d-flex flex-wrap gap-3">
         @foreach (var listEvent in Model)
         {
@@ -13,23 +22,65 @@
                 <img src="@listEvent.ImageLink" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title"> @listEvent.EventName</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card’s
-                        content.
-                    </p>
-                    <div class="mb-3 @(listEvent.Status == StatusEnum.Open ? "bg-success" : "bg-danger") text-light rounded"
-                        style="width: fit-content; padding: 0.25rem 0.5rem;">
+                    <p class="card-text">@listEvent.Description</p>
+                    <button
+                        class="mb-3 @(listEvent.Status == StatusEnum.Open ? "btn-success" : "btn-secondary") btn text-light rounded"
+                        style="width: fit-content; padding: 0.25rem 0.5rem;"
+                        disabled="@(listEvent.Status == StatusEnum.Close)" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal" data-eventid="@listEvent.Id">
                         @listEvent.Status
-                    </div>
+
+                    </button>
                     <div class="d-flex gap-2 flex-wrap">
                         <p>@listEvent.Seats Seats</p>
                         <p>@listEvent.Date</p>
+
                     </div>
+
                 </div>
             </div>
 
         }
-
     </div>
-
 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Booking</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center flex-column align-items-center gap-2">
+                <h3>
+                    Do you want to book this event?
+                </h3>
+                <form id="bookForm" method="POST" asp-action="Book" asp-controller="User">
+                    <input name="EventId" type="text" id="eventId" hidden>
+                </form>
+                <button class="btn btn-primary mb-3" type="submit" form="bookForm">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts
+{
+    <script>
+
+        $('#exampleModal').on("show.bs.modal", function (event) {
+            var button = $(event.relatedTarget);
+            var eventId = button.data('eventid');
+
+            var modal = $(this);
+
+            modal.find('#eventId').val(eventId);
+
+        })
+
+
+    </script>
+}
